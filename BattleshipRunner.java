@@ -10,6 +10,7 @@ public class BattleshipRunner {
          if ((limit <= 83 && limit > 0 )|| limit == -1) { //Limits from 1-83 and -1 are valid
             break;
          }
+         System.out.println("Please type a number from 1 - 83, or -1 for unlimited guesses");
          limit = gameSelect.nextInt(); //waits for another int input if previous number was invalid
       }
       boolean won;
