@@ -1,15 +1,22 @@
 import java.util.*;
-import java.io.*;
 public class Battleship {
 
    private int[][] board;
+   private Scanner scan;
+   private int guesses = 0;
 
 //1 Ship
 //2 Hit
 //3 Empty
 //4 Miss
 
+   public Battleship(Scanner s) {
+      this();
+      scan = s;
+   }
+
    public Battleship() {
+      scan = new Scanner(System.in);
       board = new int[10][10];
       for (int r = 0; r < board.length; r++)
          for (int c = 0; c < board.length; c++)
@@ -32,29 +39,23 @@ public class Battleship {
    
    public boolean placeBoat(int var, int x, int y, int r) {
       if (r == 0) {
-         if (x + var >= board[0].length) return false;
+         if (x + var > board[0].length) return false;
          for (int col = x; col < x + var; col++) {
             if (board[col][y] != 3) return false;
          }
-         int temp = 0;
          for (int col = x; col < x + var; col++) {
-            temp++;
             board[col][y] = 1;
          }
-         System.out.println(temp);
          return true;
       }
       if (r == 1) {
-         if (y + var >= board.length) return false;
+         if (y + var > board.length) return false;
          for (int row = y; row < y + var; row++) {
             if (board[x][row] != 3) return false;
          }
-         int temp = 0;
          for (int row = y; row < y + var; row++) {
-            temp++;
             board[x][row] = 1;
          }
-         System.out.println(temp);
          return true;
       }
       return false;
