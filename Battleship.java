@@ -62,8 +62,10 @@ public class Battleship {
    }
       
    public String printHits() {
-      String temp = "";
+      String temp = "   1 2 3 4 5 6 7 8 9 10\n";
       for (int x = 0; x < board.length; x++) {
+         if (x < 9) temp += " ";
+         temp += (x + 1) + " ";
          for (int y = 0; y < board[0].length; y++) {
             if (board[x][y] == 2) temp += "H ";
             else if (board[x][y] == 4) temp += "M ";
@@ -75,8 +77,10 @@ public class Battleship {
    } 
    
    public String printBoats() {
-      String temp = "";
+      String temp = "   1 2 3 4 5 6 7 8 9 10\n";
       for (int x = 0; x < board.length; x++) {
+         if (x < 9) temp += " ";
+         temp += (x + 1) + " ";
          for (int y = 0; y < board[0].length; y++) {
             if (board[x][y] == 1) temp += "A ";
             else if (board[x][y] == 2) temp += "H ";
@@ -97,15 +101,54 @@ public class Battleship {
       }
       return false;
    }
-   public void play() {
-      
+   //checks if there are any ship spaces left that haven't been hit
+   public boolean allSunk() {
+      for (int r = 0; r < board.length; r++)
+         for (int c = 0; c < board[0].length; c++)
+            if (board[r][c] == 1) return false;
+      return true;
    }
-   
-   public void play(int x) {
-      
+
+   //asks for one guess and shoots it, returns false if the spot was already shot
+   private boolean guess() {
+      System.out.println("Enter a row and a column (1-10), for example: 3 7");
+      int row = scan.nextInt();
+      int col = scan.nextInt();
+      while (row < 1 || row > 10 || col < 1 || col > 10) { //waits for numbers in the board
+         System.out.println("That's off the board. Enter a row and a column from 1-10");
+         row = scan.nextInt();
+         col = scan.nextInt();
+      }
+      if (shootBoard(row - 1, col - 1) == false) {
+         System.out.println("You already shot there, try again");
+         return false;
+      }
+      guesses++;
+      System.out.println(printHits());
+      if (board[row - 1][col - 1] == 2) System.out.println("Hit!");
+      else System.out.println("Miss!");
+      return true;
    }
-   public static void main(String[] args){
-      Battleship temp = new Battleship();
-      System.out.println(temp.printBoats());
-   } 
+
+   //plays with unlimited guesses, returns true when all the ships are sunk
+   public boolean play() {
+      System.out.println(printHits());
+      while (allSunk() == false) {
+         guess();
+      }
+      return true;
+   }
+
+   //plays with a guess limit, returns true if all the ships are sunk before the guesses run out
+   public boolean play(int x) {
+      System.out.println(printHits());
+      while (allSunk() == false && guesses < x) {
+         if (guess() == true) System.out.println((x - guesses) + " guesses left");
+      }
+      return allSunk();
+   }
+
+   public int getGuesses() {
+      return guesses;
+   }
 }
